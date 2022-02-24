@@ -36,14 +36,15 @@ class Project:
         return f'Project(name={self.name}, days={self.days}, score={self.score}, best_before={self.best_before}, roles={self.roles})'
 
 
-class Result:
-    def __init__(self, x):
-        self.x = x
+class ExecutedProject:
+    def __init__(self, name, contributors):
+        self.name = name
+        self.contributors = contributors
 
     def print_sol(self, ofile):
-        print(self.x, file=ofile)
-        # assert streets only once
-        assert x
+        print(self.name, file=ofile)
+        assert len(self.contributors) >= 1
+        print(" ".join(self.contributors), file=ofile)
 
 
 def solve(INPUT_FILE):
@@ -52,8 +53,9 @@ def solve(INPUT_FILE):
         first_line = f.readline().strip()
         num_contr, num_pro = map(int, first_line.split(" "))
 
-        print(num_contr)
-        print(num_pro)
+        print("Loading: {}".format(INPUT_FILE))
+        print("Contributors:", num_contr)
+        print("Projects:", num_pro)
 
         contributors = []
         projects = []
@@ -78,14 +80,20 @@ def solve(INPUT_FILE):
                 skills[sk] = level
             projects.append(Project(name, int(days), int(score), int(best_before), skills))
 
-        print(contributors)
-        print(projects)
+        # print(contributors)
+        # print(projects)
 
-    # solutions = []
-    # with open(INPUT_FILE.replace(".txt", ".out"), "w") as of:
-    #     print(len(solutions), file=of)
-    #     for solution in solutions:
-    #         solution.print_sol(of)
+    executed_projects = []
+
+    # SOLVE HERE!
+
+
+    # Print Result to File
+    with open(INPUT_FILE.replace(".txt", ".out"), "w") as of:
+        print(len(executed_projects), file=of)
+        for proj in executed_projects:
+            proj.print_sol(of)
+
 
 
 if __name__ == "__main__":
@@ -97,5 +105,7 @@ if __name__ == "__main__":
 
     for inputfile in files:
         if "requirements.txt" in inputfile:
+            continue
+        if ".out" in inputfile:
             continue
         solve(inputfile)
