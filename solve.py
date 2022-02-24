@@ -9,18 +9,31 @@ import math
 from collections import defaultdict
 
 
-class SomeClass:
-    __slots__ = ['int_a', 'int_b', "name", "time"]
+class Contributor:
+    __slots__ = ['name', 'skill_count', "skills"]
 
-    def __init__(self, int_a, int_b, name, time):
-        self.int_a = int_a
-        self.int_b = int_b
+    def __init__(self, name, skills):
         self.name = name
-        self.time = time
+        self.skill_count = len(skills)
+        self.skills = skills
 
     def __repr__(self):
-        return f'SomeClass(int_a={self.int_a}, int_b={self.int_b}, name={self.name}, time={self.time})'
+        return f'Contributor(name={self.name}, skill_count={self.skill_count})'
 
+
+class Project:
+    __slots__ = ['name', 'days', "score", "best_before", "skills", "roles"]
+
+    def __init__(self, name, days, score, best_before, skills):
+        self.name = name
+        self.days = days
+        self.score = score
+        self.best_before = best_before
+        self.skills = skills
+        self.roles = len(skills)
+
+    def __repr__(self):
+        return f'Project(name={self.name}, days={self.days}, score={self.score}, best_before={self.best_before}, roles={self.roles})'
 
 
 class Result:
@@ -34,18 +47,45 @@ class Result:
 
 
 def solve(INPUT_FILE):
-
     # READ INPUT FILE
     with open(INPUT_FILE, "r") as f:
         first_line = f.readline().strip()
-        list(f.readline().strip().split())
+        num_contr, num_pro = map(int, first_line.split(" "))
 
-        solutions.append(Result(int_id, schedule, cycle_time, stw))
+        print(num_contr)
+        print(num_pro)
 
-    with open(INPUT_FILE.replace(".txt", ".out"), "w") as of:
-        print(len(solutions), file=of)
-        for solution in solutions:
-            solution.print_sol(of)
+        contributors = []
+        projects = []
+
+        # Contributors
+        for _ in range(num_contr):
+            name, skill_count = f.readline().strip().split(" ")
+            print(name)
+            skills = {}
+            for _ in range(int(skill_count)):
+                sk, level = f.readline().strip().split(" ")
+                skills[sk] = level
+            contributors.append(Contributor(name, skills))
+
+        # Projects
+        for _ in range(num_pro):
+            name, days, score, best_before, roles = f.readline().strip().split(" ")
+            print(name)
+            skills = {}
+            for _ in range(int(roles)):
+                sk, level = f.readline().strip().split(" ")
+                skills[sk] = level
+            projects.append(Project(name, int(days), int(score), int(best_before), skills))
+
+        print(contributors)
+        print(projects)
+
+    # solutions = []
+    # with open(INPUT_FILE.replace(".txt", ".out"), "w") as of:
+    #     print(len(solutions), file=of)
+    #     for solution in solutions:
+    #         solution.print_sol(of)
 
 
 if __name__ == "__main__":
