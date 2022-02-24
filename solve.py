@@ -5,8 +5,13 @@ import sys
 import random
 import glob
 import math
+import time
 
 from collections import defaultdict
+
+
+MAX_RUNTIME = 10
+max_days, max_best_before, max_score = None
 
 
 class Contributor:
@@ -35,6 +40,26 @@ class Project:
     def __repr__(self):
         return f'Project(name={self.name}, days={self.days}, score={self.score}, best_before={self.best_before}, roles={self.roles})'
 
+    def value(self, current_day=0):
+        global max_days, max_best_before, max_score
+        if max_days is not None:
+            days_weight = float(self.days)/float(max_days)
+        else:
+            days_weight = float(self.days)
+
+        if self.best_before < current_day + self.days:
+            best_before_weight = 1
+        else:
+            best_before_weight = 0
+        #     best_before_weight = float(self.best_before - current_day)/float(max_best_before)
+        # else:
+        #     days_weight = float(self.best_before)
+
+        if max_score is not None:
+            score_weight = float(self.score)/float(max_score)
+        else:
+            score_weight = float(self.score)
+
 
 class ExecutedProject:
     def __init__(self, name, contributors):
@@ -45,6 +70,9 @@ class ExecutedProject:
         print(self.name, file=ofile)
         assert len(self.contributors) >= 1
         print(" ".join(self.contributors), file=ofile)
+
+
+def project_value(p)
 
 
 def solve(INPUT_FILE):
@@ -84,8 +112,18 @@ def solve(INPUT_FILE):
         # print(projects)
 
     executed_projects = []
+    remaining_projects = projects
+    t1 = time.time()
+    day = 0
 
-    # SOLVE HERE!
+
+    while remaining_projects and time.time() < t1 + MAX_RUNTIME:
+
+
+
+        day += 1
+
+
 
 
     # Print Result to File
