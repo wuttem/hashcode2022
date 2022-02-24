@@ -51,12 +51,12 @@ class Project:
         else:
             score = self.score - ((current_day + self.days) - self.best_before)
 
-        max_level = 0
-        for skill in self.skills:
-            if skill[1] > max_level:
-                max_level = skill[1]
-        if max_level <= 7:
-            score = score * 10
+        # max_level = 0
+        # for skill in self.skills:
+        #     if skill[1] > max_level:
+        #         max_level = skill[1]
+        # if max_level <= 7:
+        #     score = score * 10
 
         score_per_day = score/self.days
 
@@ -137,7 +137,7 @@ def solve(INPUT_FILE):
 
     executed_projects = []
 
-    # projects = filter_projects_by_skill(projects)
+    projects = filter_projects_by_skill(projects)
 
     remaining_projects = [x for x in projects]
     people_available = set([c.name for c in contributors.values()])
