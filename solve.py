@@ -8,6 +8,8 @@ import math
 import time
 
 from collections import defaultdict
+import itertools
+import pandas as pd
 
 
 MAX_RUNTIME = 10
@@ -71,6 +73,45 @@ class ExecutedProject:
         assert len(self.contributors) >= 1
         print(" ".join(self.contributors), file=ofile)
 
+def to_table_format(INPUT_FILE, contributors, projects):
+    skills = [list(contributor.skills.keys()) for contributor in contributors]
+    all_skills = set(list(itertools.chain(*skills)))
+    contributor_skill_dict = {}
+    contributor_skill_dict["name"] = []
+    for skill in all_skills:
+        contributor_skill_dict[skill] = []
+    for c in contributors:
+        contributor_skill_dict["name"].append(c.name)
+        for skill in all_skills:
+            contributor_skill_dict[skill].append(c.skills.get(skill,0))
+
+    project_skill_dict = {}
+    project_skill_dict["name"] = []
+    project_skill_dict["score"] = []
+    project_skill_dict["best_before"] = []
+    project_skill_dict["roles"] = []
+    for skill in all_skills:
+        project_skill_dict[skill] = []
+    for p in projects:
+        project_skill_dict["name"].append(p.name)
+        project_skill_dict["score"].append(p.score)
+        project_skill_dict["roles"].append(p.roles)
+        project_skill_dict["best_before"].append(p.best_before)
+        for skill in all_skills:
+            project_skill_dict[skill].append(p.skills.get(skill, 0))
+
+    
+    project_skill_dict
+    contributor_skill_dict
+    pandas_projects = pd.DataFrame(project_skill_dict)
+    pandas_contributors = pd.DataFrame(contributor_skill_dict)
+
+    pandas_projects.to_csv(INPUT_FILE + "_projects.csv")
+    pandas_contributors.to_csv(INPUT_FILE + "_contributors.csv")
+    print(pandas_projects)
+    print(pandas_contributors)
+
+
 
 def project_value(p)
 
@@ -110,6 +151,8 @@ def solve(INPUT_FILE):
 
         # print(contributors)
         # print(projects)
+        to_table_format(INPUT_FILE, contributors, projects)
+
 
     executed_projects = []
     remaining_projects = projects
